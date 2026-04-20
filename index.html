@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WOW Birthday</title>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  color: white;
+  font-family: monospace;
+  text-align: center;
+}
+
+.hidden { display: none; }
+
+#rotate {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  font-size: 28px;
+}
+
+canvas { position: fixed; top: 0; left: 0; }
+
+.center {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  font-size: 90px;
+}
+
+.neon {
+  text-shadow: 0 0 10px #ff4dff, 0 0 20px #ff4dff, 0 0 40px #ff4dff;
+}
+
+.type {
+  font-size: 42px;
+  position: absolute;
+  top: 35%;
+  width: 100%;
+}
+
+.card {
+  position: absolute;
+  top: 15%;
+  width: 100%;
+  animation: fade 2s ease forwards;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: hsl(calc(360 * var(--i)), 100%, 50%);
+  top: -10px;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh); }
+}
+
+#countCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.greeting-card-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 10vh;
+}
+
+.greeting-card {
+  width: min(90vw, 520px);
+  min-height: 320px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.card-shell {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  transform-style: preserve-3d;
+}
+
+.card-front,
+.card-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  border: 2px solid #ff4dff;
+  background: linear-gradient(135deg, rgba(30, 0, 40, 0.95), rgba(0, 0, 0, 0.95));
+  box-shadow: 0 0 20px rgba(255, 77, 255, 0.45);
+}
+
+.card-front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  padding: 20px;
+  transition: transform 0.9s ease;
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+.card-inner {
+  padding: 28px;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+}
+
+.greeting-card.open .card-front {
+  transform: rotateY(-160deg);
+}
+
+.greeting-card.open .card-inner {
+  opacity: 1;
+}
+
+.card-inner h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.card-note {
+  margin: 14px 0;
+  line-height: 1.5;
+}
+
+.tap-tip {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-top: 12px;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div id="rotate">Tap to start 📱</div>
+<canvas id="matrix" class="hidden"></canvas>
+<canvas id="countCanvas" class="hidden"></canvas>
+
+<div id="count" class="center neon hidden"></div>
+<div id="text" class="type neon hidden"></div>
+
+<div id="gif" class="hidden" style="position:absolute;top:25%;width:100%">
+  <img src="https://media.giphy.com/media/l1J9FiGxR61OcF2mI/giphy.gif" width="260" alt="Two loving cats">
+</div>
+
+<div id="card" class="card hidden">
+  <div class="greeting-card-wrap">
+    <div class="greeting-card" id="greetingCard" role="button" tabindex="0" aria-label="Open greeting card">
+      <div class="card-shell">
+        <div class="card-front neon">💌 Open your birthday card</div>
+        <div class="card-inner">
+          <h2>💖 Happy Birthday 💖</h2>
+          <p class="card-note">You are deeply loved, appreciated, and truly special.</p>
+          <p class="card-note">May your days be filled with joy, warm hugs, and happy surprises.</p>
+          <p class="card-note">Keep shining exactly the way you do — the world is brighter with you in it.</p>
+          <p class="tap-tip">Tap again to close</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// START
+window.addEventListener("click", start, { once: true });
+window.addEventListener("deviceorientation", start, { once: true });
+
+let audioCtx;
+
+function start() {
+  document.getElementById("rotate").classList.add("hidden");
+  startMatrix();
+  startCountdown();
+}
+
+// MATRIX
+function startMatrix() {
+  const canvas = document.getElementById("matrix");
+  canvas.classList.remove("hidden");
+  const ctx = canvas.getContext("2d");
+  canvas.height = innerHeight;
+  canvas.width = innerWidth;
+
+  const letters = "HAPPYBIRTHDAY";
+  const size = 16;
+  const cols = Math.floor(canvas.width / size);
+  const drops = [];
+  for (let i = 0; i < cols; i++) drops[i] = 1;
+
+  setInterval(() => {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ff4dff";
+    ctx.font = size + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const t = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(t, i * size, drops[i] * size);
+      if (drops[i] * size > canvas.height && Math.random() > 0.97) drops[i] = 0;
+      drops[i]++;
+    }
+  }, 33);
+}
+
+// COUNTDOWN (square particles)
+function startCountdown() {
+  const canvas = document.getElementById("countCanvas");
+  const ctx = canvas.getContext("2d");
+  canvas.classList.remove("hidden");
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  const digits = ["3", "2", "1"];
+  let index = 0;
+
+  const pixelMap = {
+    "1": ["00100", "01100", "00100", "00100", "00100", "00100", "01110"],
+    "2": ["01110", "10001", "00001", "00010", "00100", "01000", "11111"],
+    "3": ["11110", "00001", "00001", "01110", "00001", "00001", "11110"]
+  };
+
+  const particles = [];
+  const scatterCount = 360;
+
+  function spawnScatter() {
+    particles.length = 0;
+    for (let i = 0; i < scatterCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        tx: Math.random() * canvas.width,
+        ty: Math.random() * canvas.height,
+        size: 4 + Math.random() * 3,
+        vx: 0,
+        vy: 0
+      });
+    }
+  }
+
+  function makeTargets(char) {
+    const map = pixelMap[char];
+    const cell = Math.max(12, Math.floor(Math.min(canvas.width, canvas.height) / 28));
+    const cols = map[0].length;
+    const rows = map.length;
+    const offsetX = (canvas.width - cols * cell) / 2;
+    const offsetY = (canvas.height - rows * cell) / 2;
+
+    const targets = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        if (map[r][c] === "1") {
+          for (let k = 0; k < 10; k++) {
+            targets.push({
+              x: offsetX + c * cell + Math.random() * cell,
+              y: offsetY + r * cell + Math.random() * cell
+            });
+          }
+        }
+      }
+    }
+    return targets;
+  }
+
+  let phase = "assemble";
+  let phaseStart = performance.now();
+  let targets = makeTargets(digits[index]);
+  spawnScatter();
+
+  function nextDigit() {
+    index++;
+    if (index >= digits.length) {
+      canvas.classList.add("hidden");
+      setTimeout(showText, 300);
+      return;
+    }
+    targets = makeTargets(digits[index]);
+    phase = "assemble";
+    phaseStart = performance.now();
+    spawnScatter();
+  }
+
+  function animate(now) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const elapsed = now - phaseStart;
+
+    if (phase === "assemble" && elapsed > 850) {
+      phase = "hold";
+      phaseStart = now;
+      vibrate();
+    } else if (phase === "hold" && elapsed > 350) {
+      phase = "explode";
+      phaseStart = now;
+      particles.forEach((p) => {
+        p.vx = (Math.random() - 0.5) * 12;
+        p.vy = (Math.random() - 0.5) * 12;
+      });
+    } else if (phase === "explode" && elapsed > 500) {
+      nextDigit();
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      const t = targets[i % targets.length] || { x: canvas.width / 2, y: canvas.height / 2 };
+
+      if (phase === "assemble" || phase === "hold") {
+        p.x += (t.x - p.x) * 0.14;
+        p.y += (t.y - p.y) * 0.14;
+      } else {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+      }
+
+      ctx.fillStyle = i % 5 ? "#ff4dff" : "#77f7ff";
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    }
+
+    if (index < digits.length) requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+}
+
+function vibrate() {
+  if (navigator.vibrate) navigator.vibrate(100);
+}
+
+// TYPE TEXT
+function showText() {
+  document.getElementById("count").classList.add("hidden");
+  const el = document.getElementById("text");
+  el.classList.remove("hidden");
+
+  const msg = "Happy Birthday My Baby";
+  let i = 0;
+  const typer = setInterval(() => {
+    el.innerText = msg.slice(0, i);
+    i++;
+    if (i > msg.length) {
+      clearInterval(typer);
+      setTimeout(showGif, 1200);
+    }
+  }, 80);
+}
+
+// GIF + CONFETTI + MELODY
+function showGif() {
+  document.getElementById("text").classList.add("hidden");
+  document.getElementById("gif").classList.remove("hidden");
+  playHappyBirthday();
+
+  for (let i = 0; i < 120; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.animationDuration = (Math.random() * 3 + 2) + "s";
+    c.style.setProperty('--i', Math.random());
+    document.body.appendChild(c);
+  }
+
+  setTimeout(showCard, 3500);
+}
+
+function playHappyBirthday() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  if (!audioCtx) audioCtx = new AudioContext();
+
+  const notes = [
+    [262, 0.35], [262, 0.2], [294, 0.55], [262, 0.55], [349, 0.55], [330, 1.0],
+    [262, 0.35], [262, 0.2], [294, 0.55], [262, 0.55], [392, 0.55], [349, 1.0],
+    [262, 0.35], [262, 0.2], [523, 0.55], [440, 0.55], [349, 0.55], [330, 0.55], [294, 1.0],
+    [466, 0.35], [466, 0.2], [440, 0.55], [349, 0.55], [392, 0.55], [349, 1.1]
+  ];
+
+  let t = audioCtx.currentTime;
+  notes.forEach(([freq, dur]) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.18, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + dur + 0.03);
+    t += dur;
+  });
+}
+
+// FINAL
+function showCard() {
+  document.getElementById("gif").classList.add("hidden");
+  document.getElementById("card").classList.remove("hidden");
+
+  const card = document.getElementById("greetingCard");
+  const toggle = () => card.classList.toggle("open");
+
+  card.addEventListener("click", toggle);
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggle();
+    }
+  });
+}
+</script>
+
+</body>
+</html>
