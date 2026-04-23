@@ -206,59 +206,37 @@ font-size: 32px;
 
 #rotate {
   position: absolute;
-  top: 40%;
+  top: 42%;
   width: 100%;
   text-align: center;
+  z-index: 20;
 }
 
-.rotate-text {
-  margin-top: 14px;
-  font-size: 18px;
-  opacity: 0.8;
+.tap-icon {
+  width: 190px;
+  height: auto;
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  animation: logoTap 1.25s infinite ease-in-out;
+  filter: drop-shadow(0 0 18px rgba(255, 77, 255, 0.7));
 }
 
-/* сама иконка */
-.rotate-icon {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto;
-  border: 3px solid #ff4dff;
-  border-radius: 12px;
-  position: relative;
-  animation: rotateAnim 1.8s infinite ease-in-out;
-}
+@keyframes logoTap {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 0.8;
+  }
 
-/* стрелочки */
-.rotate-icon::before,
-.rotate-icon::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 3px solid #ff4dff;
-  border-left: none;
-  border-top: none;
-}
+  50% {
+    transform: scale(1.08) translateY(-7px);
+    opacity: 1;
+  }
 
-/* верхняя стрелка */
-.rotate-icon::before {
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-}
-
-/* нижняя стрелка */
-.rotate-icon::after {
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-135deg);
-}
-
-/* анимация поворота */
-@keyframes rotateAnim {
-  0% { transform: rotate(0deg); }
-  50% { transform: rotate(90deg); }
-  100% { transform: rotate(0deg); }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.8;
+  }
 }
 
 .cover-front {
@@ -285,7 +263,9 @@ font-size: 32px;
 </head>
 <body>
 
-<div id="rotate" class="hidden"></div>
+<div id="rotate">
+  <img src="poshlk.png" class="tap-icon" alt="tap">
+</div>
 <canvas id="matrix" class="hidden"></canvas>
 <canvas id="countCanvas" class="hidden"></canvas>
 
