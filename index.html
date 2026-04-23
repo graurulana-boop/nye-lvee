@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WOW Birthday</title>
+<link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
 body {
   margin: 0;
@@ -37,10 +40,11 @@ canvas { position: fixed; top: 0; left: 0; }
 }
 
 .type {
-  font-size: 42px;
+  font-size: 48px;
   position: absolute;
   top: 35%;
   width: 100%;
+  font-family: 'Great Vibes', cursive;
 }
 
 .card {
@@ -102,9 +106,11 @@ canvas { position: fixed; top: 0; left: 0; }
   position: absolute;
   inset: 0;
   border-radius: 14px;
-  border: 2px solid #ff4dff;
-  background: linear-gradient(135deg, rgba(30, 0, 40, 0.95), rgba(0, 0, 0, 0.95));
-  box-shadow: 0 0 20px rgba(255, 77, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
 }
 
 .card-front {
@@ -116,6 +122,9 @@ canvas { position: fixed; top: 0; left: 0; }
   transition: transform 0.9s ease;
   transform-origin: left center;
   backface-visibility: hidden;
+
+font-family: 'Great Vibes', cursive;
+font-size: 32px;
 }
 
 .card-inner {
@@ -136,24 +145,150 @@ canvas { position: fixed; top: 0; left: 0; }
 .card-inner h2 {
   text-align: center;
   margin-top: 0;
+  font-size: 30px;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 1px;
 }
 
 .card-note {
-  margin: 14px 0;
-  line-height: 1.5;
+  margin: 16px 0;
+  line-height: 1.7;
+  font-size: 20px;
 }
 
 .tap-tip {
-  font-size: 14px;
+  font-size: 16px;
   opacity: 0.9;
-  margin-top: 12px;
+  margin-top: 16px;
   text-align: center;
 }
+.page {
+  display: none;
+  text-align: left;
+}
+
+.page.active {
+  display: block;
+}
+
+.page img {
+  display: block;
+  margin: 12px auto 0;
+  max-width: 100%;
+  width: 200px;
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.card-inner {
+  padding: 28px;
+  text-align: left;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+  overflow: hidden;
+  font-family: 'Marck Script', cursive;
+}
+
+.greeting-card {
+  width: min(82vw, 420px);
+  min-height: 440px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.card-shell {
+  position: relative;
+  width: 100%;
+  min-height: 440px;
+  transform-style: preserve-3d;
+}
+
+#rotate {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-align: center;
+}
+
+.rotate-text {
+  margin-top: 14px;
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* сама иконка */
+.rotate-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border: 3px solid #ff4dff;
+  border-radius: 12px;
+  position: relative;
+  animation: rotateAnim 1.8s infinite ease-in-out;
+}
+
+/* стрелочки */
+.rotate-icon::before,
+.rotate-icon::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 3px solid #ff4dff;
+  border-left: none;
+  border-top: none;
+}
+
+/* верхняя стрелка */
+.rotate-icon::before {
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* нижняя стрелка */
+.rotate-icon::after {
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-135deg);
+}
+
+/* анимация поворота */
+@keyframes rotateAnim {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.cover-front {
+  position: relative;
+  background-image: url("23_49_39.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.cover-text {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Great Vibes', cursive;
+  font-size: 28px;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
 </style>
 </head>
 <body>
 
-<div id="rotate">Tap to start 📱</div>
+<div id="rotate">
+  <div class="rotate-icon"></div>
+  <div class="rotate-text">поверни телефон</div>
+</div>
 <canvas id="matrix" class="hidden"></canvas>
 <canvas id="countCanvas" class="hidden"></canvas>
 
@@ -168,7 +303,9 @@ canvas { position: fixed; top: 0; left: 0; }
   <div class="greeting-card-wrap">
     <div class="greeting-card" id="greetingCard" role="button" tabindex="0" aria-label="Open greeting card">
       <div class="card-shell">
-        <div class="card-front neon">💌 Open your birthday card</div>
+        <div class="card-front cover-front">
+  <div class="cover-text">💌 Open your birthday card</div>
+</div>
         <div class="card-inner" id="pages">
           <div class="page active">
           <h2>💖 Happy Birthday 💖</h2>
@@ -176,14 +313,14 @@ canvas { position: fixed; top: 0; left: 0; }
           </div>
 
           <div class="page">
-          <p class="card-note">Рядом с тобой спокойно, тепло и очень хорошо. Впереди у нас еще столько историй, приклюений и счастливых моментов, которые мы проживем вместе.</p>
-          <img src="cat.png" widht="200">
+          <p class="card-note">Рядом с тобой спокойно, тепло и очень хорошо. Впереди у нас еще столько историй, приключений и счастливых моментов, которые мы проживем вместе.</p>
+          <img src="cat.png" width="200" alt="cat">
             </div>
 
           <div class="page">
           <p class="card-note">Я очень хочу, чтобы рядом со мной ты чувствовала себя счастливой. И я буду делать все, что в моих силах, чтобы дарить тебе это чувство каждый день.</p>
           <p class="card-note">Ты - моя вселенная.</p> 
-          <img src="love.gif" widht="220">
+         <img src="love.gif" width="220" alt="love gif">
           <p class="tap-tip">Tap again to close</p>
         </div>
       </div>
@@ -193,10 +330,26 @@ canvas { position: fixed; top: 0; left: 0; }
 
 <script>
 // START
-window.addEventListener("click", start, { once: true });
-window.addEventListener("deviceorientation", start, { once: true });
+window.addEventListener("click", checkOrientationAndStart);
+window.addEventListener("resize", checkOrientationAndStart);
+window.addEventListener("orientationchange", checkOrientationAndStart);
 
 let audioCtx;
+
+let started = false;
+
+function checkOrientationAndStart() {
+  if (started) return;
+
+  const isLandscape = window.innerWidth > window.innerHeight;
+
+  if (isLandscape) {
+    started = true;
+    start();
+  } else {
+    document.getElementById("rotate").classList.remove("hidden");
+  }
+}
 
 function start() {
   document.getElementById("rotate").classList.add("hidden");
@@ -427,17 +580,42 @@ function showCard() {
   document.getElementById("card").classList.remove("hidden");
 
   const card = document.getElementById("greetingCard");
-  const toggle = (e) => {
-    e.stopPropagation(); // ВОТ ЭТА КОМАНДА! Она запрещает клику идти дальше к фону
-    card.classList.toggle("open");
-};
+  const pages = card.querySelectorAll(".page");
+  let currentPage = 0;
 
+  function showPage(index) {
+    pages.forEach((page) => page.classList.remove("active"));
+    pages[index].classList.add("active");
+  }
 
-  card.addEventListener("click", (e) => toggle(e));
+  showPage(0);
+
+  const onCardClick = (e) => {
+    e.stopPropagation();
+
+    if (!card.classList.contains("open")) {
+      card.classList.add("open");
+      showPage(0);
+      currentPage = 0;
+      return;
+    }
+
+    if (currentPage < pages.length - 1) {
+      currentPage++;
+      showPage(currentPage);
+    } else {
+      card.classList.remove("open");
+      currentPage = 0;
+      showPage(currentPage);
+    }
+  };
+
+  card.addEventListener("click", onCardClick);
+
   card.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      toggle();
+      onCardClick(e);
     }
   });
 }
