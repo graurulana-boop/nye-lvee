@@ -169,11 +169,21 @@ canvas { position: fixed; top: 0; left: 0; }
     <div class="greeting-card" id="greetingCard" role="button" tabindex="0" aria-label="Open greeting card">
       <div class="card-shell">
         <div class="card-front neon">💌 Open your birthday card</div>
-        <div class="card-inner">
+        <div class="card-inner" id="pages">
+          <div class="page active">
           <h2>💖 Happy Birthday 💖</h2>
-          <p class="card-note">You are deeply loved, appreciated, and truly special.</p>
-          <p class="card-note">May your days be filled with joy, warm hugs, and happy surprises.</p>
-          <p class="card-note">Keep shining exactly the way you do — the world is brighter with you in it.</p>
+          <p class="card-note">Ты стала для меня родным, самым близким человеком, человеком с которым я как будто бы была знакома целую вечность.</p>
+          </div>
+
+          <div class="page">
+          <p class="card-note">Рядом с тобой спокойно, тепло и очень хорошо. Впереди у нас еще столько историй, приклюений и счастливых моментов, которые мы проживем вместе.</p>
+          <img src="cat.png" widht="200">
+            </div>
+
+          <div class="page">
+          <p class="card-note">Я очень хочу, чтобы рядом со мной ты чувствовала себя счастливой. И я буду делать все, что в моих силах, чтобы дарить тебе это чувство каждый день.</p>
+          <p class="card-note">Ты - моя вселенная.</p> 
+          <img src="love.gif" widht="220">
           <p class="tap-tip">Tap again to close</p>
         </div>
       </div>
