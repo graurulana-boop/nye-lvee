@@ -330,26 +330,9 @@ font-size: 32px;
 
 <script>
 // START
-window.addEventListener("click", checkOrientationAndStart);
-window.addEventListener("resize", checkOrientationAndStart);
-window.addEventListener("orientationchange", checkOrientationAndStart);
-
+window.addEventListener("click", start, { once: true });
+  
 let audioCtx;
-
-let started = false;
-
-function checkOrientationAndStart() {
-  if (started) return;
-
-  const isLandscape = window.innerWidth > window.innerHeight;
-
-  if (isLandscape) {
-    started = true;
-    start();
-  } else {
-    document.getElementById("rotate").classList.remove("hidden");
-  }
-}
 
 function start() {
   document.getElementById("rotate").classList.add("hidden");
