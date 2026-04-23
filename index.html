@@ -260,7 +260,7 @@ function startCountdown() {
 
   function makeTargets(char) {
     const map = pixelMap[char];
-    const cell = Math.max(12, Math.floor(Math.min(canvas.width, canvas.height) / 28));
+    const cell = Math.max(12, Math.floor(Math.min(canvas.width, canvas.height) / 18));
     const cols = map[0].length;
     const rows = map.length;
     const offsetX = (canvas.width - cols * cell) / 2;
