@@ -418,9 +418,13 @@ function showCard() {
   document.getElementById("card").classList.remove("hidden");
 
   const card = document.getElementById("greetingCard");
-  const toggle = () => card.classList.toggle("open");
+  const toggle = (e) => {
+    e.stopPropagation(); // ВОТ ЭТА КОМАНДА! Она запрещает клику идти дальше к фону
+    card.classList.toggle("open");
+};
 
-  card.addEventListener("click", toggle);
+
+  card.addEventListener("click", (e) => toggle(e));
   card.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
