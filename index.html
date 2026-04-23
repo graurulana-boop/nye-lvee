@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WOW Birthday</title>
-
 <style>
 body {
   margin: 0;
@@ -213,7 +212,7 @@ function startMatrix() {
     ctx.fillStyle = "rgba(0,0,0,0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#ff4dff";
-    ctx.font = size + "px monospace";
+    ctx.font = "bold " + (size * 3.7)
 
     for (let i = 0; i < drops.length; i++) {
       const t = letters[Math.floor(Math.random() * letters.length)];
@@ -242,7 +241,7 @@ function startCountdown() {
   };
 
   const particles = [];
-  const scatterCount = 360;
+  const scatterCount = 1500;
 
   function spawnScatter() {
     particles.length = 0;
