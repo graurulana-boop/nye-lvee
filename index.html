@@ -112,7 +112,7 @@ canvas { position: fixed; top: 0; left: 0; }
 }
 
 .card-front {
-  background-image: url("23_49_39.png");
+  background-image: url("cover.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -243,6 +243,41 @@ canvas { position: fixed; top: 0; left: 0; }
     filter: blur(18px) drop-shadow(0 0 60px rgba(255, 77, 255, 1));
     opacity: 0;
   }
+}
+
+.tap-icon {
+  width: 190px;
+  height: auto;
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  animation: logoTap 1.25s infinite ease-in-out;
+  filter: drop-shadow(0 0 18px rgba(255, 77, 255, 0.7));
+}
+
+@keyframes logoTap {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.08) translateY(-7px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.8;
+  }
+}
+
+#rotate {
+  position: absolute;
+  top: 42%;
+  width: 100%;
+  text-align: center;
+  z-index: 20;
 }
 
 </style>
