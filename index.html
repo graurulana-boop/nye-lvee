@@ -432,13 +432,21 @@ function startCountdown() {
     offCtx.fillText(char, off.width / 2, off.height / 2);
     const data = offCtx.getImageData(0, 0, off.width, off.height).data;
     const targets = [];
-    const gap = 4;
-    for (let y = 0; y < off.height; y += gap) {
-      for (let x = 0; x < off.width; x += gap) {
-        const alpha = data[(y * off.width + x) * 4 + 3];
-        if (alpha > 120) targets.push({ x: x, y: y });
-      }
+    const gap = 6; // чем больше число, тем меньше точек
+
+for (let y = 0; y < off.height; y += gap) {
+  for (let x = 0; x < off.width; x += gap) {
+    const alpha = data[(y * off.width + x) * 4 + 3];
+
+    // берем не все точки, а только часть
+    if (alpha > 120 && Math.random() > 0.62) {
+      targets.push({
+        x: x + (Math.random() - 0.5) * 3,
+        y: y + (Math.random() - 0.5) * 3
+      });
     }
+  }
+}
     return targets;
   }
 
@@ -451,7 +459,7 @@ function startCountdown() {
         x: window.innerWidth / 2 + Math.cos(angle) * distance,
         y: window.innerHeight / 2 + Math.sin(angle) * distance,
         tx: t.x, ty: t.y,
-        size: Math.random() * 1.5 + 0.5, 
+        size: Math.random() * 1.2 + 0.6, 
         opacity: Math.random() * 0.8 + 0.3,
         delay: Math.random() * 400 
       };
