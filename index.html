@@ -148,6 +148,7 @@ canvas { position: fixed; top: 0; left: 0; }
 }
 
 .card-inner h2 {
+  position: relative; /* ← добавили */
   text-align: center;
   margin-top: 0;
   font-size: 24px;
@@ -284,6 +285,16 @@ canvas { position: fixed; top: 0; left: 0; }
   z-index: 20;
 }
 
+.left-heart {
+  position: absolute;
+  left: 10px;
+}
+
+.right-heart {
+  position: absolute;
+  right: 10px;
+}
+  
 </style>
 </head>
 <body>
@@ -310,7 +321,11 @@ canvas { position: fixed; top: 0; left: 0; }
 </div>
         <div class="card-inner" id="pages">
           <div class="page active">
-          <h2>💖 Happy Birthday, my shiny 💖 </h2>
+          <h2>
+  <span class="left-heart">💖</span>
+  Happy Birthday, my shiny
+  <span class="right-heart">💖</span>
+</h2>
           <p class="card-note">Ты стала для меня родным, самым близким человеком, человеком с которым я как будто бы была знакома целую вечность.</p>
           </div>
 
