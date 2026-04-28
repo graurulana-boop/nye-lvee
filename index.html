@@ -49,11 +49,18 @@ canvas {
 }
 
 .type {
-  font-size: 48px;
-  position: absolute;
-  top: 35%;
-  width: 100%;
-  font-family: 'Great Vibes', cursive;
+position: absolute;
+top: 36%;
+width: 100%;
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(42px, 10vw, 78px);
+font-weight: 600;
+letter-spacing: 1.5px;
+color: #ffd1ec;
+text-shadow:
+0 0 8px rgba(255, 170, 220, 0.9),
+0 0 22px rgba(255, 90, 180, 0.55),
+0 0 50px rgba(255, 70, 190, 0.25);
 }
 
 .card {
@@ -137,15 +144,19 @@ canvas {
 }
 
 .card-inner {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  padding: 28px;
-  text-align: left;
-  opacity: 0;
-  transition: opacity 0.5s ease 0.3s;
-  font-family: 'Marck Script', cursive;
-  box-sizing: border-box;
+background: rgba(255, 255, 255, 0.08);
+backdrop-filter: blur(18px);
+-webkit-backdrop-filter: blur(18px);
+padding: 24px 22px;
+text-align: justify;
+opacity: 0;
+transition: opacity 0.5s ease 0.3s;
+font-family: 'Marck Script', cursive;
+box-sizing: border-box;
+
+display: flex;
+flex-direction: column;
+justify-content: center;
 }
 
 .greeting-card.open .card-front {
@@ -435,7 +446,7 @@ z-index: 1;
 }
 
 .letter-panel h2 {
-  margin: 0;
+  margin: 0 0 -8px;
   text-align: center;
   font-family: 'Great Vibes', cursive;
   font-size: clamp(34px, 7vw, 52px);
@@ -488,8 +499,10 @@ z-index: 1;
     0 0 18px rgba(255, 90, 180, 0.45);
 }
 
-.letter-decor {
-  margin: 8px auto 24px;
+letter-decor {
+
+margin: -22px auto 8px;
+
 }
 
 .letter-decor span {
@@ -527,9 +540,31 @@ z-index: 1;
   }
 }
 
+.card-note {
+font-size: 20px;
+line-height: 1.65;
+letter-spacing: 0.2px;
+margin: 0;
+}
+
+.page {
+min-height: 100%;
+}
+
+.page.active {
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+
+.birthday-title {
+margin-bottom: 16px;
+}
+
 </style>
 </head>
 <body>
+  <audio id="bgMusic" loop> <source src="cigarettes.mp3" type="audio/mpeg"> </audio>
 
 <div id="rotate">
   <img src="ChatGPT Image 24 апр. 2026 г., 01_17_04.png" class="tap-icon" alt="tap">
@@ -619,28 +654,6 @@ z-index: 1;
 <div id="bigLetter" class="hidden big-letter">
   <div class="letter-panel">
     <h2>Мое письмо к тебе</h2>
-    <div class="heart-divider">
-  <svg viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="pinkLine2" x1="0" x2="1">
-        <stop offset="0%" stop-color="transparent"/>
-        <stop offset="50%" stop-color="#ff9fd1"/>
-        <stop offset="100%" stop-color="transparent"/>
-      </linearGradient>
-    </defs>
-
-    <line x1="20" y1="30" x2="115" y2="30"
-      stroke="url(#pinkLine2)" stroke-width="4" stroke-linecap="round"/>
-
-    <path d="M150 42 C120 18, 140 5, 150 20 C160 5, 180 18, 150 42Z"
-      fill="none" stroke="#ffd1ec" stroke-width="5"
-      stroke-linecap="round" stroke-linejoin="round"/>
-
-    <line x1="185" y1="30" x2="280" y2="30"
-      stroke="url(#pinkLine2)" stroke-width="4" stroke-linecap="round"/>
-  </svg>
-  
-</div>
     <div class="decor-line letter-decor">
   <span></span>
   <div class="heart-outline">♡</div>
@@ -662,6 +675,12 @@ let starfieldAnimationFrameId; // ID для управления Космосо�
 window.addEventListener("click", start, { once: true });
 
 function start() {
+const music = document.getElementById("bgMusic");
+music.volume = 0.45;
+music.play();
+
+const rotate = document.getElementById("rotate");
+rotate.classList.add("start-fade");
   const rotate = document.getElementById("rotate");
   rotate.classList.add("start-fade");
   setTimeout(() => {
@@ -852,8 +871,7 @@ function showText() {
 function showGif() {
   document.getElementById("text").classList.add("hidden");
   document.getElementById("gif").classList.remove("hidden");
-  playHappyBirthday();
-
+  
   // Создаем конфетти
   for (let i = 0; i < 120; i++) {
     const c = document.createElement("div");
