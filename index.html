@@ -29,7 +29,13 @@ body {
   font-size: 28px;
 }
 
-canvas { position: fixed; top: 0; left: 0; }
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+}
 
 .center {
   position: absolute;
@@ -313,7 +319,7 @@ canvas { position: fixed; top: 0; left: 0; }
 .universe-scene {
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: 20;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -400,7 +406,7 @@ z-index: 1;
 .big-letter {
   position: absolute;
   inset: 0;
-  z-index: 7;
+  z-index: 30;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1030,16 +1036,23 @@ let isTyping = false;
 let fullLetterText = "";
 let typingTimer = null;
 
-document.getElementById("openUniverseBtn").addEventListener("click", () => {
-  document.getElementById("universeScene").classList.add("hidden");
-const bigLetter = document.getElementById("bigLetter");
-bigLetter.classList.remove("hidden");
+const openUniverseBtn = document.getElementById("openUniverseBtn");
 
-setTimeout(() => {
-  bigLetter.classList.add("with-earth");
-}, 400);
+openUniverseBtn.onclick = function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  document.getElementById("universeScene").classList.add("hidden");
+
+  const bigLetter = document.getElementById("bigLetter");
+  bigLetter.classList.remove("hidden");
+
+  setTimeout(() => {
+    bigLetter.classList.add("with-earth");
+  }, 400);
+
   typeBigLetter();
-});
+};
 
 function typeBigLetter() {
   fullLetterText = `С днем рождения, моя мечта, мое самое дорогое милоподобноеопупительносногшибательнозамечательное маленькое котость!
