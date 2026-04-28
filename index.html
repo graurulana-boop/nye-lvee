@@ -499,7 +499,7 @@ z-index: 1;
     0 0 18px rgba(255, 90, 180, 0.45);
 }
 
-letter-decor {
+.letter-decor {
 
 margin: -22px auto 8px;
 
@@ -675,18 +675,25 @@ let starfieldAnimationFrameId; // ID для управления Космосо�
 window.addEventListener("click", start, { once: true });
 
 function start() {
-const music = document.getElementById("bgMusic");
-music.volume = 0.45;
-music.play();
+  const music = document.getElementById("bgMusic");
+  music.volume = 0.45;
 
-const rotate = document.getElementById("rotate");
-rotate.classList.add("start-fade");
+  music.play().catch(() => {
+    console.log("music not started");
+  });
+
+  const rotate = document.getElementById("rotate");
+  rotate.classList.add("start-fade");
+
   setTimeout(() => {
     rotate.classList.add("hidden");
-    startMatrix(); // Запускаем Матрицу
-    startCountdown(); // Запускаем обратный отсчет (HD)
+    startMatrix();
+    startCountdown();
   }, 1200);
 }
+
+
+
 
 // 1. ANIMATION: MATRIX (Розовый дождь)
 function startMatrix() {
