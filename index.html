@@ -354,6 +354,9 @@ canvas { position: fixed; top: 0; left: 0; }
 }
 
 .universe-button {
+  position: relative;
+z-index: 10;
+  
   padding: 10px 58px;
   border-radius: 24px;
   border: 2px solid rgba(255, 150, 210, 0.75);
@@ -374,6 +377,8 @@ canvas { position: fixed; top: 0; left: 0; }
   bottom: -150px;
   width: min(125vw, 850px);
   transform: translateX(-50%);
+  pointer-events: none;
+z-index: 1;
   filter:
     drop-shadow(0 0 25px rgba(80, 170, 255, 0.9))
     drop-shadow(0 0 60px rgba(40, 120, 255, 0.5));
@@ -496,6 +501,7 @@ canvas { position: fixed; top: 0; left: 0; }
   width: min(75vw, 620px);
   z-index: -1;
   opacity: 0;
+  pointer-events: none;
   filter:
     drop-shadow(0 0 25px rgba(80, 170, 255, 0.9))
     drop-shadow(0 0 60px rgba(40, 120, 255, 0.5));
@@ -627,8 +633,6 @@ canvas { position: fixed; top: 0; left: 0; }
       stroke="url(#pinkLine2)" stroke-width="4" stroke-linecap="round"/>
   </svg>
   
-  <img src="ChatGPT Image 28 апр. 2026 г., 03_40_51.png" class="letter-earth" alt="earth">
-  
 </div>
     <div class="decor-line letter-decor">
   <span></span>
@@ -637,6 +641,8 @@ canvas { position: fixed; top: 0; left: 0; }
 </div>
     <div id="typedLetter" class="letter-text"></div>
   </div>
+  
+  <img src="ChatGPT Image 28 апр. 2026 г., 03_40_51.png" class="letter-earth" alt="earth">
 </div>
 
 <script>
