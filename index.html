@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 body {
   margin: 0;
@@ -17,7 +18,9 @@ body {
   text-align: center;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none !important;
+}
 
 #rotate {
   position: absolute;
@@ -146,21 +149,18 @@ canvas { position: fixed; top: 0; left: 0; }
 .greeting-card.open .card-inner {
   opacity: 1;
 }
-
-.card-inner h2 {
-  position: relative; /* ← добавили */
+.card-inner h2,
+.birthday-title {
   text-align: center;
   margin-top: 0;
-  font-size: 24px;
+  font-size: 25px;
   font-family: 'Playfair Display', serif;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
 }
 
-.card-note {
-  margin: 16px 0;
-  line-height: 1.7;
-  font-size: 20px;
+.birthday-title span {
+  display: block;
 }
 
 .tap-tip {
@@ -285,16 +285,205 @@ canvas { position: fixed; top: 0; left: 0; }
   z-index: 20;
 }
 
-.left-heart {
-  position: absolute;
-  left: 10px;
+.flying-heart {
+  position: fixed;
+  bottom: -40px;
+  font-size: 30px;
+  z-index: 5;
+  pointer-events: none;
+  animation: flyHeart 4s ease-out forwards;
 }
 
-.right-heart {
-  position: absolute;
-  right: 10px;
+@keyframes flyHeart {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-110vh) scale(1.4);
+    opacity: 0;
+  }
 }
-  
+
+.universe-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.universe-content {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  text-align: center;
+  animation: universeFade 1.4s ease forwards;
+}
+
+@keyframes universeFade {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.universe-title {
+  margin-top: 10vh;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 9vw, 82px);
+  font-weight: 600;
+  color: #ffd1ec;
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 8px rgba(255, 170, 220, 0.9),
+    0 0 22px rgba(255, 90, 180, 0.45);
+}
+
+.universe-button {
+  padding: 10px 58px;
+  border-radius: 24px;
+  border: 2px solid rgba(255, 150, 210, 0.75);
+  background: rgba(255, 100, 180, 0.04);
+  color: #ffd1ec;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    0 0 14px rgba(255, 120, 200, 0.45),
+    inset 0 0 18px rgba(255, 120, 200, 0.12);
+}
+
+.earth-img {
+  position: absolute;
+  left: 50%;
+  bottom: -180px;
+  width: min(95vw, 620px);
+  transform: translateX(-50%);
+  filter:
+    drop-shadow(0 0 25px rgba(80, 170, 255, 0.9))
+    drop-shadow(0 0 60px rgba(40, 120, 255, 0.5));
+  animation: earthRise 2s ease forwards;
+}
+
+@keyframes earthRise {
+  from {
+    bottom: -360px;
+    opacity: 0;
+  }
+
+  to {
+    bottom: -180px;
+    opacity: 1;
+  }
+}
+
+.big-letter {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+.letter-panel {
+  width: min(78vw, 560px);
+  max-height: 78vh;
+  overflow-y: auto;
+  padding: 28px 30px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(8, 10, 16, 0.62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 0 24px rgba(255, 120, 200, 0.16),
+    inset 0 0 28px rgba(255, 255, 255, 0.04);
+}
+
+.letter-text {
+  letter-spacing: 0.3px;
+}
+
+.letter-panel h2 {
+  margin: 0;
+  text-align: center;
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(34px, 7vw, 52px);
+  color: #ffd1ec;
+  text-shadow: 0 0 16px rgba(255, 120, 200, 0.8);
+  font-weight: 400;
+}
+
+.letter-text {
+  white-space: pre-line;
+  font-family: 'Marck Script', cursive;
+  font-size: clamp(18px, 4vw, 24px);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+}
+
+.decor-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 6px auto 18px;
+}
+
+.decor-line span {
+  width: 92px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 150, 210, 0.35),
+    rgba(255, 150, 210, 1),
+    rgba(255, 150, 210, 0.35),
+    transparent
+  );
+  box-shadow:
+    0 0 8px rgba(255, 120, 200, 0.8),
+    0 0 18px rgba(255, 120, 200, 0.35);
+}
+
+.heart-outline {
+  font-family: 'Playfair Display', serif;
+  color: #ffd1ec;
+  font-size: 30px;
+  line-height: 1;
+  text-shadow:
+    0 0 8px rgba(255, 150, 210, 0.9),
+    0 0 18px rgba(255, 90, 180, 0.45);
+}
+
+.letter-decor {
+  margin: 8px auto 24px;
+}
+
+.letter-decor span {
+  width: 110px;
+}
+
 </style>
 </head>
 <body>
@@ -316,28 +505,104 @@ canvas { position: fixed; top: 0; left: 0; }
   <div class="greeting-card-wrap">
     <div class="greeting-card" id="greetingCard" role="button" tabindex="0" aria-label="Open greeting card">
       <div class="card-shell">
-  <div class="card-front">
-  <div class="cover-text">💌 Open your birthday card</div>
-</div>
+
+        <div class="card-front">
+          <div class="cover-text">💌 Open your birthday card</div>
+        </div>
+
         <div class="card-inner" id="pages">
           <div class="page active">
-          <h2>💖 Happy Birthday, my shiny 💖</h2>
-          <p class="card-note">Ты стала для меня родным, самым близким человеком, человеком с которым я как будто бы была знакома целую вечность.</p>
+            <h2 class="birthday-title">
+              <span>💖 Happy Birthday</span>
+              <span>my shiny 💖</span>
+            </h2>
+            <p class="card-note">Ты стала для меня родным, самым близким человеком, человеком с которым я как будто бы была знакома целую вечность.</p>
           </div>
 
           <div class="page">
-          <p class="card-note">Рядом с тобой спокойно, тепло и очень хорошо. Впереди у нас еще столько историй, приключений и счастливых моментов, которые мы проживем вместе.</p>
-          <img src="cat.png" width="200" alt="cat">
-            </div>
+            <p class="card-note">Рядом с тобой спокойно, тепло и очень хорошо. Впереди у нас еще столько историй, приключений и счастливых моментов, которые мы проживем вместе.</p>
+            <img src="cat.png" width="200" alt="cat">
+          </div>
 
           <div class="page">
-          <p class="card-note">Я очень хочу, чтобы рядом со мной ты чувствовала себя счастливой. И я буду делать все, что в моих силах, чтобы дарить тебе это чувство каждый день.</p>
-          <p class="card-note">Ты - моя вселенная.</p> 
-         <img src="love.gif" width="220" alt="love gif">
-          <p class="tap-tip">Tap again to close</p>
+            <p class="card-note">Я очень хочу, чтобы рядом со мной ты чувствовала себя счастливой. И я буду делать все, что в моих силах, чтобы дарить тебе это чувство каждый день.</p>
+            <p class="card-note">Ты - моя вселенная.</p>
+            <img src="love.gif" width="220" alt="love gif">
+            <p class="tap-tip">Tap again to continue</p>
+          </div>
         </div>
+
       </div>
     </div>
+  </div>
+</div>
+
+<div id="universeScene" class="hidden universe-scene">
+  <div class="universe-content">
+
+    <div class="universe-title">Open my universe</div>
+<div class="heart-divider">
+  <svg viewBox="0 0 200 40" width="160" height="40">
+    <defs>
+      <linearGradient id="pinkLine2" x1="0" x2="1">
+        <stop offset="0%" stop-color="transparent"/>
+        <stop offset="50%" stop-color="#ff9fd1"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </linearGradient>
+    </defs>
+
+    <line x1="10" y1="20" x2="70" y2="20"
+      stroke="url(#pinkLine2)" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- ЗАПОЛНЕННОЕ СЕРДЦЕ -->
+    <path d="M100 24 
+             C92 16, 96 10, 100 14 
+             C104 10, 108 16, 100 24Z"
+      fill="#ffd1ec"
+      stroke="none"/>
+
+    <line x1="130" y1="20" x2="190" y2="20"
+      stroke="url(#pinkLine2)" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</div>
+
+    <button class="universe-button" id="openUniverseBtn">open</button>
+
+    <img src="ChatGPT Image 28 апр. 2026 г., 03_40_51.png" class="earth-img" alt="earth">
+
+  </div>
+</div>
+
+<div id="bigLetter" class="hidden big-letter">
+  <div class="letter-panel">
+    <h2>Мое письмо к тебе</h2>
+    <div class="heart-divider">
+  <svg viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="pinkLine2" x1="0" x2="1">
+        <stop offset="0%" stop-color="transparent"/>
+        <stop offset="50%" stop-color="#ff9fd1"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </linearGradient>
+    </defs>
+
+    <line x1="20" y1="30" x2="115" y2="30"
+      stroke="url(#pinkLine2)" stroke-width="4" stroke-linecap="round"/>
+
+    <path d="M150 42 C120 18, 140 5, 150 20 C160 5, 180 18, 150 42Z"
+      fill="none" stroke="#ffd1ec" stroke-width="5"
+      stroke-linecap="round" stroke-linejoin="round"/>
+
+    <line x1="185" y1="30" x2="280" y2="30"
+      stroke="url(#pinkLine2)" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+</div>
+    <div class="decor-line letter-decor">
+  <span></span>
+  <div class="heart-outline">♡</div>
+  <span></span>
+</div>
+    <div id="typedLetter" class="letter-text"></div>
   </div>
 </div>
 
@@ -554,6 +819,37 @@ function showGif() {
   }
   setTimeout(showCard, 3500); // Переходим к открытке
 }
+function createFlyingHeart(side) {
+  const heart = document.createElement("div");
+  heart.className = "flying-heart";
+
+  heart.innerText = Math.random() > 0.5 ? "💗" : "💘";
+
+  if (side === "left") {
+    heart.style.left = "18vw";
+  } else {
+    heart.style.right = "18vw";
+  }
+
+  heart.style.animationDuration = (3.5 + Math.random() * 1.2) + "s";
+  heart.style.fontSize = (26 + Math.random() * 12) + "px";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 5000);
+}
+
+function startFlyingHearts() {
+  createFlyingHeart("left");
+  createFlyingHeart("right");
+
+  setInterval(() => {
+    createFlyingHeart("left");
+    createFlyingHeart("right");
+  }, 5000);
+}
 
 // 5. FINAL STATE: CARD + COSMOS (ТВОЙ ЗАПРОС ЗДЕСЬ)
 function showCard() {
@@ -571,6 +867,7 @@ function showCard() {
 
   // В. ЗАПУСКАЕМ КОСМОС (HD)
   startStarfield();
+  startFlyingHearts();
 
   // Логика самой открытки (перелистывание страниц)
   const card = document.getElementById("greetingCard");
@@ -593,13 +890,11 @@ function showCard() {
       return;
     }
     if (currentPage < pages.length - 1) {
-      currentPage++;
-      showPage(currentPage);
-    } else {
-      card.classList.remove("open");
-      currentPage = 0;
-      showPage(currentPage);
-    }
+  currentPage++;
+  showPage(currentPage);
+} else {
+  showUniverseScene();
+}
   };
 
   card.addEventListener("click", onCardClick);
@@ -686,6 +981,64 @@ function startStarfield() {
   // Запускаем бесконечный цикл анимации
   animateStars();
 }
+
+function showUniverseScene() {
+  document.getElementById("card").classList.add("hidden");
+  document.getElementById("universeScene").classList.remove("hidden");
+}
+
+let isTyping = false;
+let fullLetterText = "";
+let typingTimer = null;
+
+document.getElementById("openUniverseBtn").addEventListener("click", () => {
+  document.getElementById("universeScene").classList.add("hidden");
+  document.getElementById("bigLetter").classList.remove("hidden");
+  typeBigLetter();
+});
+
+function typeBigLetter() {
+  fullLetterText = `С днем рождения, моя мечта, мое самое дорогое милоподобноеопупительносногшибательнозамечательное маленькое котость!
+
+Я часто надумываю о том, как мне повезло с тем, что ты появилась в моей гнусной жизни, наполнив её самыми яркими, приятными и незабываемыми моментами. Ты у меня такая одна, и это точно: других таких больше не бывает и никогда не будет.
+
+В тебе есть то, чего нет ни в ком другом: твои навыки, успехи, опыт и ум, твоя сообразительность и огромный потенциал. Твое ангелоподобное тело, твой смех и твои слезы, твой сон, твой взгляд на меня... Родная, ты не представляешь, как ослепляешь меня каждый день своей невообразимостью! В твоих глазах я вижу вечность.
+
+Я хочу, чтобы ты всегда чувствовала себя самой любимой и особенной, потому что для меня ты — всё. Я ценю то, что ты сделала и делаешь для меня. Ценю, что мы есть друг у друга, и что бы ни случилось, я всегда буду твоей опорой. Ты та, ради которой я хочу снести всех тупых и мешающих тебе людей; ради тебя я готова двигаться вперед и расти вместе с тобой.
+
+Набирайся сил — до главного приза тебя ждет продолжение!`;
+
+  const el = document.getElementById("typedLetter");
+  const panel = document.querySelector(".letter-panel");
+
+  el.innerHTML = "";
+  let i = 0;
+  isTyping = true;
+
+  function type() {
+    if (!isTyping) return;
+
+    if (i < fullLetterText.length) {
+      el.innerHTML += fullLetterText[i];
+      i++;
+      panel.scrollTop = panel.scrollHeight;
+      typingTimer = setTimeout(type, 18);
+    } else {
+      isTyping = false;
+    }
+  }
+
+  type();
+}
+
+document.querySelector(".letter-panel").addEventListener("click", () => {
+  if (isTyping) {
+    clearTimeout(typingTimer);
+    document.getElementById("typedLetter").innerHTML = fullLetterText;
+    document.querySelector(".letter-panel").scrollTop = document.querySelector(".letter-panel").scrollHeight;
+    isTyping = false;
+  }
+});
 
 // Мелодия "Happy Birthday" (оставляем без изменений)
 function playHappyBirthday() {
