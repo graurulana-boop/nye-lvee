@@ -361,7 +361,8 @@ canvas {
 
 .universe-button {
   position: relative;
-z-index: 10;
+  z-index: 999;
+  pointer-events: auto;
   
   padding: 10px 58px;
   border-radius: 24px;
@@ -608,7 +609,7 @@ z-index: 1;
   </svg>
 </div>
 
-    <button class="universe-button" id="openUniverseBtn">open</button>
+    <button class="universe-button" id="openUniverseBtn" onclick="openLetter(event)">open</button>
 
     <img src="ChatGPT Image 28 апр. 2026 г., 03_40_51.png" class="earth-img" alt="earth">
 
@@ -1036,15 +1037,16 @@ let isTyping = false;
 let fullLetterText = "";
 let typingTimer = null;
 
-const openUniverseBtn = document.getElementById("openUniverseBtn");
+function openLetter(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
 
-openUniverseBtn.onclick = function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-
-  document.getElementById("universeScene").classList.add("hidden");
-
+  const universeScene = document.getElementById("universeScene");
   const bigLetter = document.getElementById("bigLetter");
+
+  universeScene.classList.add("hidden");
   bigLetter.classList.remove("hidden");
 
   setTimeout(() => {
@@ -1052,7 +1054,7 @@ openUniverseBtn.onclick = function(e) {
   }, 400);
 
   typeBigLetter();
-};
+}
 
 function typeBigLetter() {
   fullLetterText = `С днем рождения, моя мечта, мое самое дорогое милоподобноеопупительносногшибательнозамечательное маленькое котость!
